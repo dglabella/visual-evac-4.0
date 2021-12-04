@@ -1,15 +1,37 @@
 import React from "react";
-import cellStyle from "./../styles/Cell.css";
+import { makeStyles } from "@mui/styles";
 
-const aliveClassName = "Cell-alive";
-const deadClassName = "Cell-dead";
+const aliveCellStyle = makeStyles({
+    aliveCell: {
+        width: "10px",
+        height: "10px",
+        border: "solid 1px black",
+        backgroundColor: "black"
+    }
+});
+
+const deadCellStyle = makeStyles({
+    deadCell: {
+        width: "10px",
+        height: "10px",
+        border: "solid 1px black",
+        backgroundColor: "white"
+    }
+});
 
 const Cell = (props) => {
     const cellState = props.cellState;
+
+    const aliveCellStyleClass = aliveCellStyle();
+    const deadCellStyleClass = deadCellStyle();
+
     return (
         <div
-            className={cellState.isAlive ? aliveClassName : deadClassName}
-            style={cellStyle.Cell}
+            className={
+                cellState.isAlive
+                    ? aliveCellStyleClass.aliveCell
+                    : deadCellStyleClass.deadCell
+            }
         />
     );
 };
