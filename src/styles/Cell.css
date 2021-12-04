@@ -1,5 +1,13 @@
-.Cell {
+.Cell-alive {
     width: 10px;
     height: 10px;
     border: solid 1px black;
+    background-color: black;
+}
+
+.Cell-dead {
+    width: 10px;
+    height: 10px;
+    border: solid 1px black;
+    background-color: white;
 }

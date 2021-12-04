@@ -1,10 +1,17 @@
 import React from "react";
 import cellStyle from "./../styles/Cell.css";
 
-const className = "Cell";
+const aliveClassName = "Cell-alive";
+const deadClassName = "Cell-dead";
 
-const Cell = () => {
-    return <div className={className} style={cellStyle.Cell}></div>;
+const Cell = (props) => {
+    const cellState = props.cellState;
+    return (
+        <div
+            className={cellState.isAlive ? aliveClassName : deadClassName}
+            style={cellStyle.Cell}
+        />
+    );
 };
 
 export default Cell;
