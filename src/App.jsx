@@ -1,5 +1,6 @@
 import Cell from "./components/Cell";
 import { makeStyles } from "@mui/styles";
+import GameOfLifeCell from "./components/GameOfLifeCell";
 
 const rowsQuantity = 10;
 const colsQuantity = 10;
@@ -17,7 +18,6 @@ function App() {
     const cellularAutomataStyleClass = cellularAutomataStyle();
 
     let cellularAutomaton = [];
-
     for (let i = 0; i < rowsQuantity; i++) {
         cellularAutomaton[i] = [];
         for (let j = 0; j < colsQuantity; j++) {
@@ -64,7 +64,7 @@ function App() {
         <div className={cellularAutomataStyleClass.cellularAutomata}>
             {cellularAutomaton.map((row, i) =>
                 row.map((cellState, j) => (
-                    <Cell key={`(${i},${j})`} cellState={cellState} />
+                    <GameOfLifeCell key={`(${i},${j})`} cellState={cellState} />
                 ))
             )}
         </div>
