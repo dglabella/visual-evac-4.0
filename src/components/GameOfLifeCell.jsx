@@ -20,21 +20,15 @@ const deadCellStyle = makeStyles({
     }
 });
 
-const cellState = {
-    isAlive: false
-};
-
-function GameOfLifeCell() {
+function GameOfLifeCell(props) {
     const aliveCellStyleClass = aliveCellStyle();
     const deadCellStyleClass = deadCellStyle();
 
-    cellState.isAlive = Math.random() < 0.5;
-
     return (
         <Cell
-            cellState={cellState}
+            cellState={props.cellState}
             className={
-                cellState.isAlive
+                props.cellState.isAlive
                     ? aliveCellStyleClass.aliveCell
                     : deadCellStyleClass.deadCell
             }

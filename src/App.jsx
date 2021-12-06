@@ -1,6 +1,7 @@
-import Cell from "./components/Cell";
 import { makeStyles } from "@mui/styles";
 import GameOfLifeCell from "./components/GameOfLifeCell";
+import UploadButton from "./components/UploadButton";
+import FileUploader from "./components/FileUploader";
 
 const rowsQuantity = 10;
 const colsQuantity = 10;
@@ -27,46 +28,20 @@ function App() {
         }
     }
 
-    //console.log(cellularAutomaton);
-    // console.log([
-    //     { isAlive: true },
-    //     { isAlive: true },
-    //     { isAlive: false },
-    //     { isAlive: true }
-    // ]);
-
-    // const list = [
-    //     {
-    //         isAlive: true
-    //     },
-    //     {
-    //         isAlive: false
-    //     },
-    //     {
-    //         isAlive: true
-    //     },
-    //     {
-    //         isAlive: false
-    //     },
-    //     {
-    //         isAlive: true
-    //     }
-    // ];
-
-    // return (
-    //     <div>
-    //         {list.map((cellState, i) => (
-    //             <Cell key={i} cellState={cellState} />
-    //         ))}
-    //     </div>
-    // );
     return (
-        <div className={cellularAutomataStyleClass.cellularAutomata}>
-            {cellularAutomaton.map((row, i) =>
-                row.map((cellState, j) => (
-                    <GameOfLifeCell key={`(${i},${j})`} cellState={cellState} />
-                ))
-            )}
+        <div>
+            <FileUploader />
+            <UploadButton />
+            <div className={cellularAutomataStyleClass.cellularAutomata}>
+                {cellularAutomaton.map((row, i) =>
+                    row.map((cellState, j) => (
+                        <GameOfLifeCell
+                            key={`(${i},${j})`}
+                            cellState={cellState}
+                        />
+                    ))
+                )}
+            </div>
         </div>
     );
 }
