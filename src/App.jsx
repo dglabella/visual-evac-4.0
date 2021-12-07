@@ -1,64 +1,37 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
-import GameOfLifeCell from "./components/GameOfLifeCell";
-import UploadButton from "./components/UploadButton";
+import LoadFileButton from "./components/LoadFileButton";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DoneIcon from "@mui/icons-material/Done";
-
-const rowsQuantity = 10;
-const colsQuantity = 10;
-const gridSquareSize = 10;
-
-const cellularAutomataStyle = makeStyles({
-    cellularAutomata: {
-        display: "grid",
-        gridTemplateColumns: `repeat(${colsQuantity},${gridSquareSize}px)`
-    }
-});
+import CellularAutomaton from "./components/CellularAutomaton";
 
 function App() {
-    const cellularAutomataStyleClass = cellularAutomataStyle();
-
-    let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] = useState(
-        []
-    );
-    let [cellularAutomaton, setCellularAutomaton] = useState(
-        createEmptyCellularAutomatom()
-    );
+    let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] =
+        useState(null);
+    let [cellularAutomatonState, setCellularAutomatonState] = useState(null);
     let [fileName, setFileName] = useState(null);
 
     const buttonColor = fileName !== null ? "success" : "primary";
     const buttonIcon =
         fileName !== null ? <DoneIcon /> : <UploadFileOutlinedIcon />;
 
-    function createEmptyCellularAutomatom() {
-        let ret = [];
-        for (let i = 0; i < rowsQuantity; i++) {
-            ret[i] = [];
-            for (let j = 0; j < colsQuantity; j++) {
-                ret[i][j] = {};
-            }
-        }
-
-        return ret;
-    }
-
     async function getFileCallBack(uploadedFile) {
         if (uploadedFile !== null) {
-            const lifeCicle = JSON.parse(await uploadedFile.text());
-            console.log(lifeCicle);
             setCellularAutomatonLifeCycle(
-                (cellularAutomatonLifeCycle = lifeCicle)
+                (cellularAutomatonLifeCycle = JSON.parse(
+                    await uploadedFile.text()
+                ))
             );
-            setCellularAutomaton((cellularAutomaton = lifeCicle[0]));
+            setCellularAutomatonState(
+                (cellularAutomatonState = cellularAutomatonLifeCycle[0])
+            );
             setFileName((fileName = uploadedFile.name));
         }
     }
 
     return (
         <div>
-            <UploadButton
-                id="uploadFileButton1"
+            <LoadFileButton
+                id="loadFileButton1"
                 format="application/JSON"
                 buttonColor={buttonColor}
                 buttonIcon={buttonIcon}
@@ -66,17 +39,16 @@ function App() {
                 getFileCallBack={getFileCallBack}
             >
                 file
-            </UploadButton>
-            <div className={cellularAutomataStyleClass.cellularAutomata}>
-                {cellularAutomaton.map((row, i) =>
-                    row.map((cellState, j) => (
-                        <GameOfLifeCell
-                            key={`(${i},${j})`}
-                            cellState={cellState}
-                        />
-                    ))
-                )}
-            </div>
+            </LoadFileButton>
+            {cellularAutomatonState !== null ? (
+                <CellularAutomaton
+                    rowsNumb={10}
+                    colsNumb={10}
+                    state={cellularAutomatonState}
+                />
+            ) : (
+                "Load the cellular automaton life-Cycle file in order to create the view"
+            )}
         </div>
     );
 }

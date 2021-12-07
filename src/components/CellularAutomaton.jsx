@@ -1,20 +1,33 @@
 import React, { useState } from "react";
+import { makeStyles } from "@mui/styles";
+import GameOfLifeCell from "./GameOfLifeCell";
 
-const CellularAutomaton = () => {
-    const rowsNumber = 50;
-    const colsNumber = 50;
-    const [grid, setGrid] = useState(() => {
-        const rows = [];
-        for (let i = 0; i < rowsNumber; i++) {
-            rows.push(
-                Array.from(Array(colsNumber), () => {
-                    false; //  is dead initially
-                })
-            );
-        }
-        return rows;
-    });
-    return <React.Fragment>{}</React.Fragment>;
+let rowsQuantity = 5;
+let colsQuantity = 5;
+const gridSquareSize = 10;
+
+const cellularAutomataStyle = makeStyles({
+    cellularAutomata: {
+        display: "grid",
+        gridTemplateColumns: `repeat(${colsQuantity},${gridSquareSize}px)`
+    }
+});
+
+const CellularAutomaton = (props) => {
+    rowsQuantity = props.rowsNumb;
+    colsQuantity = props.colsNumb;
+    const cellularAutomataStyleClass = cellularAutomataStyle();
+    const [state, setstate] = useState(props.state);
+
+    return (
+        <div className={cellularAutomataStyleClass.cellularAutomata}>
+            {state.map((row, i) =>
+                row.map((cellState, j) => (
+                    <GameOfLifeCell key={`(${i},${j})`} cellState={cellState} />
+                ))
+            )}
+        </div>
+    );
 };
 
 export default CellularAutomaton;

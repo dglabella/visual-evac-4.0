@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-function UploadButton(props) {
+function LoadFileButton(props) {
     function getFile() {
         props.getFileCallBack(document.getElementById(props.id).files.item(0));
     }
@@ -28,4 +28,4 @@ function UploadButton(props) {
     );
 }
 
-export default UploadButton;
+export default LoadFileButton;
