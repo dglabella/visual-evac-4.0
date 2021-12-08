@@ -20,7 +20,7 @@ const deadCellStyle = makeStyles({
     }
 });
 
-function GameOfLifeCell(props) {
+const GameOfLifeCell = (props) => {
     const aliveCellStyleClass = aliveCellStyle();
     const deadCellStyleClass = deadCellStyle();
 
@@ -34,6 +34,6 @@ function GameOfLifeCell(props) {
             }
         />
     );
-}
+};
 
 export default GameOfLifeCell;
