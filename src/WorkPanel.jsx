@@ -1,24 +1,35 @@
 import React, { useState } from "react";
+import { makeStyles } from "@mui/styles";
 import LoadFileButton from "./components/LoadFileButton";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DoneIcon from "@mui/icons-material/Done";
 import CellularAutomaton from "./components/CellularAutomaton";
-import DrawPanel from "./components/DrawPanel";
-import { makeStyles } from "@mui/styles";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import ConfigBar from "./components/ConfigBar";
 import Typography from "@mui/material/Typography";
+import DrawerPanel from "./components/DrawerPanel";
+import { Box } from "@mui/system";
+import { Toolbar } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-    workPanel: {
-        display: "flex"
+const drawerWidth = 240;
+
+const useStyle = makeStyles({
+    content: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`
     },
 
-    toolbar: theme.mixins.toolbar
-}));
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0
+    },
+
+    drawerPaper: {
+        width: drawerWidth
+    }
+});
 
 const WorkPanel = () => {
-    const classes = useStyles();
+    const classes = useStyle();
 
     let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] =
         useState(null);
@@ -40,35 +51,50 @@ const WorkPanel = () => {
                 (cellularAutomatonState = cellularAutomatonLifeCycle[0])
             );
             setFileName((fileName = uploadedFile.name));
-            console.log(
-                "atomaton life cycle " + cellularAutomatonLifeCycle.length
-            );
         }
     }
 
     return (
-        <div className={classes.workPanel}>
-            <AppBar position="fixed" color="primary">
-                <Toolbar>
-                    <Typography variant="h6"></Typography>
-                </Toolbar>
-            </AppBar>
-            <LoadFileButton
-                id="loadFileButton1"
-                format="application/JSON"
-                buttonColor={buttonColor}
-                buttonIcon={buttonIcon}
-                fileName={fileName}
-                getFileCallBack={getFileCallBack}
-            >
-                file
-            </LoadFileButton>
-            <DrawPanel />
-            {cellularAutomatonState !== null ? (
-                <CellularAutomaton state={cellularAutomatonState} />
-            ) : (
-                "Load the cellular automaton life-Cycle file in order to create the view"
-            )}
+        <div>
+            <ConfigBar
+                style={{
+                    width: `calc(100% - ${drawerWidth}px)`,
+                    marginLeft: `${drawerWidth}px`
+                }}
+            />
+            <Toolbar />
+            <DrawerPanel
+                className={classes.drawer}
+                classes={{ paper: classes.drawerPaper }}
+            />
+            <div className={classes.content}>
+                <Box border={1} borderRadius={2}>
+                    <LoadFileButton
+                        id="loadFileButton1"
+                        format="application/JSON"
+                        buttonColor={buttonColor}
+                        buttonIcon={buttonIcon}
+                        fileName={fileName}
+                        getFileCallBack={getFileCallBack}
+                    >
+                        file
+                    </LoadFileButton>
+                </Box>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center"
+                    }}
+                ></div>
+                {cellularAutomatonState !== null ? (
+                    <CellularAutomaton state={cellularAutomatonState} />
+                ) : (
+                    <Typography variant="body1" color="initial">
+                        Load the cellular automaton life cycle file in order to
+                        create the view
+                    </Typography>
+                )}
+            </div>
         </div>
     );
 };

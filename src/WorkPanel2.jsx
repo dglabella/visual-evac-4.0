@@ -1,122 +1,129 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { makeStyles } from "@mui/styles";
+import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import DoneIcon from "@mui/icons-material/Done";
+import CellularAutomaton from "./components/CellularAutomaton";
+import LoadFileButton from "./components/LoadFileButton";
+import ConfigBar from "./components/ConfigBar";
+import DrawerPanel from "./components/DrawerPanel";
+import { display } from "@mui/system";
 
-const drawerWidth = 240;
+const Content = styled("Content", {
+    shouldForwardProp: (prop) => prop !== "open"
+})(({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+    }),
+    marginLeft: `-${theme.drawerWidth}px`,
+    ...(open && {
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen
+        }),
+        marginLeft: 0
+    })
+}));
 
-const useStyle = makeStyles({
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        ml: `${drawerWidth}px`
+function WorkPanel2() {
+    const theme = useTheme();
+    const [open, setOpen] = useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] =
+        useState(null);
+
+    let [cellularAutomatonState, setCellularAutomatonState] = useState(null);
+    let [fileName, setFileName] = useState(null);
+
+    const buttonColor = fileName !== null ? "success" : "primary";
+    const buttonIcon =
+        fileName !== null ? <DoneIcon /> : <UploadFileOutlinedIcon />;
+
+    async function getFileCallBack(uploadedFile) {
+        if (uploadedFile !== null) {
+            setCellularAutomatonLifeCycle(
+                (cellularAutomatonLifeCycle = JSON.parse(
+                    await uploadedFile.text()
+                ))
+            );
+            setCellularAutomatonState(
+                (cellularAutomatonState = cellularAutomatonLifeCycle[0])
+            );
+            setFileName((fileName = uploadedFile.name));
+        }
     }
-});
-
-export default function PermanentDrawerLeft() {
-    const classes = useStyle();
 
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar className={classes.appBar} position="fixed">
-                <Toolbar>
-                    <Typography variant="h6" noWrap component="div">
-                        Permanent drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": {
-                        width: drawerWidth,
-                        boxSizing: "border-box"
-                    }
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <Toolbar />
-                <Divider />
-                <List>
-                    {["Inbox", "Starred", "Send email", "Drafts"].map(
-                        (text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        )
+            <ConfigBar
+                position="fixed"
+                open={open}
+                openWidth={theme.drawerWidth}
+                IconButtonOnClick={handleDrawerOpen}
+            ></ConfigBar>
+
+            <DrawerPanel
+                open={open}
+                IconButtonOnClick={handleDrawerClose}
+            ></DrawerPanel>
+
+            <Content open={open}>
+                <div
+                    style={{
+                        // necessary for content to be below app bar
+                        ...theme.mixins.toolbar
+                    }}
+                />
+                <Box border={1} borderRadius={1}>
+                    <LoadFileButton
+                        id="loadFileButton1"
+                        format="application/JSON"
+                        buttonColor={buttonColor}
+                        buttonIcon={buttonIcon}
+                        fileName={fileName}
+                        getFileCallBack={getFileCallBack}
+                    >
+                        file
+                    </LoadFileButton>
+                </Box>
+                <Box
+                    mt={4}
+                    sx={{
+                        width: "100%",
+                        height: "100%",
+                        border: "1px dashed grey"
+                    }}
+                >
+                    {cellularAutomatonState !== null ? (
+                        <CellularAutomaton state={cellularAutomatonState} />
+                    ) : (
+                        <Typography
+                            variant="body1"
+                            color="initial"
+                            sx={}
+                        >
+                            Load the cellular automaton life cycle file in order
+                            to create the view
+                        </Typography>
                     )}
-                </List>
-                <Divider />
-                <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-            >
-                <Toolbar />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet.
-                    Semper risus in hendrerit gravida rutrum quisque non tellus.
-                    Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed
-                    adipiscing. Amet nisl suscipit adipiscing bibendum est
-                    ultricies integer quis. Cursus euismod quis viverra nibh
-                    cras. Metus vulputate eu scelerisque felis imperdiet proin
-                    fermentum leo. Mauris commodo quis imperdiet massa
-                    tincidunt. Cras tincidunt lobortis feugiat vivamus at augue.
-                    At augue eget arcu dictum varius duis at consectetur lorem.
-                    Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                    sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla
-                    est ullamcorper eget nulla facilisi etiam dignissim diam.
-                    Pulvinar elementum integer enim neque volutpat ac tincidunt.
-                    Ornare suspendisse sed nisi lacus sed viverra tellus. Purus
-                    sit amet volutpat consequat mauris. Elementum eu facilisis
-                    sed odio morbi. Euismod lacinia at quis risus sed vulputate
-                    odio. Morbi tincidunt ornare massa eget egestas purus
-                    viverra accumsan in. In hendrerit gravida rutrum quisque non
-                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor.
-                    Habitant morbi tristique senectus et. Adipiscing elit duis
-                    tristique sollicitudin nibh sit. Ornare aenean euismod
-                    elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin
-                    aliquam ultrices sagittis orci a.
-                </Typography>
-            </Box>
+                </Box>
+            </Content>
         </Box>
     );
 }
+
+export default WorkPanel2;

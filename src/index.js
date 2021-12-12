@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/index.css";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import WorkPanel from "./WorkPanel";
 import WorkPanel2 from "./WorkPanel2";
+import globalTheme from "./styles/globalTheme";
 
 ReactDOM.render(
     <React.StrictMode>
-        <WorkPanel2 />
+        <ThemeProvider theme={globalTheme}>
+            <WorkPanel2 />
+        </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );
