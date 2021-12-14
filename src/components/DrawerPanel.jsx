@@ -1,15 +1,10 @@
 import React from "react";
 import useTheme from "@mui/material/styles/useTheme";
-import { Divider, Drawer } from "@mui/material";
+import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import List from "@mui/material/List";
 import DrawerHeader from "./DrawerHeader";
 
 const DrawerPanel = (props) => {
@@ -29,7 +24,7 @@ const DrawerPanel = (props) => {
             open={props.open}
         >
             <DrawerHeader>
-                <IconButton onClick={props.IconButtonOnClick}>
+                <IconButton onClick={props.iconButtonOnClick}>
                     {theme.direction === "ltr" ? (
                         <ChevronLeftIcon />
                     ) : (
@@ -38,29 +33,7 @@ const DrawerPanel = (props) => {
                 </IconButton>
             </DrawerHeader>
             <Divider />
-            <List>
-                {["Inbox", "Starred", "Send email", "Drafts"].map(
-                    (text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    )
-                )}
-            </List>
-            <Divider />
-            <List>
-                {["All mail", "Trash", "Spam"].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
+            {props.children}
         </Drawer>
     );
 };

@@ -47,7 +47,7 @@ const ConfigBar = (props) => {
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={props.IconButtonOnClick}
+                    onClick={props.iconButtonOnClick}
                     edge="start"
                     sx={{ mr: 2, ...(props.open && { display: "none" }) }}
                 >

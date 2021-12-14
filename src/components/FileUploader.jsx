@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-function FileUploader(props) {
+const FileUploader = (props) => {
     // Create a reference to the hidden file input element
     const hiddenFileInput = React.useRef(null);
 
@@ -27,6 +27,6 @@ function FileUploader(props) {
             />
         </>
     );
-}
+};
 
 export default FileUploader;

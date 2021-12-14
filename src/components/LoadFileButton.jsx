@@ -1,5 +1,12 @@
 import React from "react";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import styled from "@mui/material/styles/styled";
+
+const Div = styled("div")(({ theme }) => ({
+    display: "flex",
+    alignItems: "center"
+}));
 
 function LoadFileButton(props) {
     function getFile() {
@@ -7,7 +14,10 @@ function LoadFileButton(props) {
     }
 
     return (
-        <div>
+        <Div>
+            <Typography mr={2} variant="body1" color="initial">
+                {props.fileName}
+            </Typography>
             <Button
                 variant="contained"
                 component="label"
@@ -23,8 +33,7 @@ function LoadFileButton(props) {
                     onInput={getFile}
                 />
             </Button>
-            {props.fileName}
-        </div>
+        </Div>
     );
 }
 

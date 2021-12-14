@@ -1,38 +1,63 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
-import LoadFileButton from "./components/LoadFileButton";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DoneIcon from "@mui/icons-material/Done";
 import CellularAutomaton from "./components/CellularAutomaton";
+import LoadFileButton from "./components/LoadFileButton";
 import ConfigBar from "./components/ConfigBar";
-import Typography from "@mui/material/Typography";
 import DrawerPanel from "./components/DrawerPanel";
-import { Box } from "@mui/system";
-import { Toolbar } from "@mui/material";
+import StatusBar from "./components/StatusBar";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SquareIcon from "@mui/icons-material/Square";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import DoorBackIcon from "@mui/icons-material/DoorBack";
+import SensorsIcon from "@mui/icons-material/Sensors";
+import CustomDropDownList from "./components/CustomDropDownList";
+import Divider from "@mui/material/Divider";
 
-const drawerWidth = 240;
+const Content = styled("content", {
+    shouldForwardProp: (prop) => prop !== "open"
+})(({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+    }),
+    marginLeft: `-${theme.drawerWidth}px`,
+    ...(open && {
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen
+        }),
+        marginLeft: 0
+    })
+}));
 
-const useStyle = makeStyles({
-    content: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`
-    },
+const ConfigBarSpacing = styled("div")(({ theme }) => ({
+    ...theme.mixins.toolbar
+}));
 
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0
-    },
+function WorkPanel() {
+    const theme = useTheme();
+    const [open, setOpen] = useState(false);
 
-    drawerPaper: {
-        width: drawerWidth
-    }
-});
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
 
-const WorkPanel = () => {
-    const classes = useStyle();
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] =
         useState(null);
+
     let [cellularAutomatonState, setCellularAutomatonState] = useState(null);
     let [fileName, setFileName] = useState(null);
 
@@ -55,20 +80,59 @@ const WorkPanel = () => {
     }
 
     return (
-        <div>
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
             <ConfigBar
-                style={{
-                    width: `calc(100% - ${drawerWidth}px)`,
-                    marginLeft: `${drawerWidth}px`
-                }}
-            />
-            <Toolbar />
-            <DrawerPanel
-                className={classes.drawer}
-                classes={{ paper: classes.drawerPaper }}
-            />
-            <div className={classes.content}>
-                <Box border={1} borderRadius={2}>
+                position="fixed"
+                open={open}
+                openWidth={theme.drawerWidth}
+                iconButtonOnClick={handleDrawerOpen}
+            ></ConfigBar>
+
+            <DrawerPanel open={open} iconButtonOnClick={handleDrawerClose}>
+                <CustomDropDownList
+                    title={"Enviroment"}
+                    icon={<ViewComfyIcon />}
+                    list={[
+                        { name: "wall", icon: <SquareIcon /> },
+                        { name: "fire", icon: <LocalFireDepartmentIcon /> },
+                        { name: "exit", icon: <DoorBackIcon /> },
+                        { name: "sensor", icon: <SensorsIcon /> }
+                    ]}
+                />
+
+                <Divider />
+                <CustomDropDownList
+                    title={"Agents"}
+                    icon={<GroupAddRoundedIcon />}
+                    list={[
+                        { name: "closest exit", icon: <PersonRoundedIcon /> },
+                        { name: "follow", icon: <PersonRoundedIcon /> },
+                        { name: "known exit", icon: <PersonRoundedIcon /> }
+                    ]}
+                />
+            </DrawerPanel>
+
+            <Content open={open}>
+                <ConfigBarSpacing />
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center"
+                    }}
+                >
+                    <Typography variant="overline" ml={2}>
+                        Selection:
+                    </Typography>
+                    <Typography
+                        variant="overline"
+                        color="primary"
+                        ml={1}
+                        sx={{ flexGrow: 1 }}
+                    >
+                        {"fire"}
+                    </Typography>
                     <LoadFileButton
                         id="loadFileButton1"
                         format="application/JSON"
@@ -80,23 +144,29 @@ const WorkPanel = () => {
                         file
                     </LoadFileButton>
                 </Box>
-                <div
-                    style={{
+                <StatusBar generation={"0"} executionState={"stoped"} />
+                <Box
+                    mt={4}
+                    sx={{
                         display: "flex",
-                        justifyContent: "center"
+                        height: "100vh",
+                        border: "1px dashed grey",
+                        justifyContent: "center",
+                        alignItems: "center"
                     }}
-                ></div>
-                {cellularAutomatonState !== null ? (
-                    <CellularAutomaton state={cellularAutomatonState} />
-                ) : (
-                    <Typography variant="body1" color="initial">
-                        Load the cellular automaton life cycle file in order to
-                        create the view
-                    </Typography>
-                )}
-            </div>
-        </div>
+                >
+                    {cellularAutomatonState !== null ? (
+                        <CellularAutomaton state={cellularAutomatonState} />
+                    ) : (
+                        <Typography variant="body1" color="initial">
+                            Load the cellular automaton life cycle file in order
+                            to create the view
+                        </Typography>
+                    )}
+                </Box>
+            </Content>
+        </Box>
     );
-};
+}
 
 export default WorkPanel;
