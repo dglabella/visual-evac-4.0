@@ -43,7 +43,7 @@ const ConfigBarSpacing = styled("div")(({ theme }) => ({
     ...theme.mixins.toolbar
 }));
 
-function WorkPanel() {
+const WorkPanel = () => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
@@ -55,10 +55,7 @@ function WorkPanel() {
         setOpen(false);
     };
 
-    let [cellularAutomatonLifeCycle, setCellularAutomatonLifeCycle] =
-        useState(null);
-
-    let [cellularAutomatonState, setCellularAutomatonState] = useState(null);
+    let [executionOutput, setExecutionOutput] = useState(null);
     let [fileName, setFileName] = useState(null);
 
     const buttonColor = fileName !== null ? "success" : "primary";
@@ -67,13 +64,8 @@ function WorkPanel() {
 
     async function getFileCallBack(uploadedFile) {
         if (uploadedFile !== null) {
-            setCellularAutomatonLifeCycle(
-                (cellularAutomatonLifeCycle = JSON.parse(
-                    await uploadedFile.text()
-                ))
-            );
-            setCellularAutomatonState(
-                (cellularAutomatonState = cellularAutomatonLifeCycle[0])
+            setExecutionOutput(
+                (executionOutput = JSON.parse(await uploadedFile.text()))
             );
             setFileName((fileName = uploadedFile.name));
         }
@@ -155,8 +147,11 @@ function WorkPanel() {
                         alignItems: "center"
                     }}
                 >
-                    {cellularAutomatonState !== null ? (
-                        <CellularAutomaton state={cellularAutomatonState} />
+                    {executionOutput !== null ? (
+                        <CellularAutomaton
+                            running={true}
+                            execOutputData={executionOutput}
+                        />
                     ) : (
                         <Typography variant="body1" color="initial">
                             Load the cellular automaton life cycle file in order
@@ -167,6 +162,6 @@ function WorkPanel() {
             </Content>
         </Box>
     );
-}
+};
 
 export default WorkPanel;

@@ -1,33 +1,59 @@
-import React from "react";
-//import { makeStyles } from "@mui/styles";
+import React, { useState, useCallback } from "react";
 import GameOfLifeCell from "./GameOfLifeCell";
+import IconButton from "@mui/material/IconButton";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 
 const gridSquareSize = 10;
 
-// const cellularAutomataStyle = makeStyles({
-//     cellularAutomata: {
-//         display: "grid",
-//         gridTemplateColumns: `repeat(${colsQuantity},${gridSquareSize}px)`
-//     }
-// });
-
 const CellularAutomaton = (props) => {
-    //const cellularAutomataStyleClass = cellularAutomataStyle();
-    //const [state, setstate] = useState(props.state);
-    const columnsQuantity = props.state[0].length;
+    let [isRunning, setIsRunning] = useState(props.running);
+    let [execOutputData, setExecOutputData] = useState(props.execOutputData);
+    let [generationIndex, setGenerationIndex] = useState(0);
+    const columnsQuantity = execOutputData.params.colsQuantity;
+
+    console.log("cols", columnsQuantity);
+
+    const run = useCallback(() => {
+        if (!isRunning) {
+            return;
+        }
+
+        console.log("isRunning");
+
+        setGenerationIndex(++generationIndex);
+
+        if (generationIndex === execOutputData.generations.lenght) {
+            setIsRunning((isRunning = false));
+        }
+        setTimeout(run, 500);
+    }, []);
+
     return (
-        <div
-            style={{
-                display: "grid",
-                gridTemplateColumns: `repeat(${columnsQuantity},${gridSquareSize}px)`
-            }}
-        >
-            {props.state.map((row, i) =>
-                row.map((cellState, j) => (
-                    <GameOfLifeCell key={`(${i},${j})`} cellState={cellState} />
-                ))
-            )}
-        </div>
+        <>
+            <IconButton
+                aria-label="play"
+                onClick={() => {
+                    run();
+                }}
+            >
+                <PlayArrowRoundedIcon />
+            </IconButton>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${columnsQuantity},${gridSquareSize}px)`
+                }}
+            >
+                {execOutputData.generations[generationIndex].map((row, i) =>
+                    row.map((cellState, j) => (
+                        <GameOfLifeCell
+                            key={`(${i},${j})`}
+                            cellState={cellState}
+                        />
+                    ))
+                )}
+            </div>
+        </>
     );
 };
 
