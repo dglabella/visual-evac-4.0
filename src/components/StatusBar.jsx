@@ -39,19 +39,39 @@ const StatusBar = (props) => {
 				aria-label="outlined button group"
 				sx={{ flexGrow: 1 }}
 			>
-				<IconButton aria-label="step backward">
+				<IconButton
+					aria-label="step backward"
+					disabled={props.disabled}
+					onClick={props.onStepBackward}
+				>
 					<FirstPageIcon />
 				</IconButton>
-				<IconButton aria-label="stop">
+				<IconButton
+					aria-label="stop"
+					disabled={props.disabled}
+					onClick={props.onStop}
+				>
 					<StopRoundedIcon />
 				</IconButton>
-				<IconButton aria-label="play" onClick={props.onPlay}>
+				<IconButton
+					aria-label="play"
+					disabled={props.disabled}
+					onClick={props.onPlay}
+				>
 					<PlayArrowRoundedIcon />
 				</IconButton>
-				<IconButton aria-label="pause">
+				<IconButton
+					aria-label="pause"
+					disabled={props.disabled}
+					onClick={props.onPause}
+				>
 					<PauseCircleFilledRoundedIcon />
 				</IconButton>
-				<IconButton aria-label="step forward">
+				<IconButton
+					aria-label="step forward"
+					disabled={props.disabled}
+					onClick={props.onStepForward}
+				>
 					<LastPageIcon />
 				</IconButton>
 			</ButtonGroup>

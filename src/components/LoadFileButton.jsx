@@ -11,9 +11,12 @@ const Div = styled("div")(({ theme }) => ({
 const LoadFileButton = (props) => {
 	console.log("rendering: LoadFileButton");
 
-	function getFile() {
-		props.getFileCallBack(document.getElementById(props.id).files.item(0));
-	}
+	const hiddenFileInput = React.useRef(null);
+
+	const handleChange = (event) => {
+		const fileUploaded = event.target.files[0];
+		props.getFileCallBack(fileUploaded);
+	};
 
 	return (
 		<Div>
@@ -26,14 +29,14 @@ const LoadFileButton = (props) => {
 				color={props.buttonColor}
 				startIcon={props.buttonIcon}
 			>
-				{props.children}
 				<input
 					type="file"
+					ref={hiddenFileInput}
 					accept={props.format}
-					id={props.id}
+					onChange={handleChange}
 					hidden
-					onInput={getFile}
 				/>
+				{props.children}
 			</Button>
 		</Div>
 	);

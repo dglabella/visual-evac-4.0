@@ -5,11 +5,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DoneIcon from "@mui/icons-material/Done";
-import CellularAutomaton from "./components/CellularAutomaton";
+import CellularAutomatonDisplay from "./components/CellularAutomatonDisplay";
 import LoadFileButton from "./components/LoadFileButton";
 import ConfigBar from "./components/ConfigBar";
 import DrawerPanel from "./components/DrawerPanel";
-import StatusBar from "./components/StatusBar";
 import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -47,7 +46,11 @@ const WorkPanel = () => {
 	console.log("rendering: WorkPanel");
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
-	const [play, setPlay] = useState(false);
+
+	const [executionOutput, setExecutionOutput] = useState({
+		fileName: null,
+		file: null
+	});
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -57,24 +60,20 @@ const WorkPanel = () => {
 		setOpen(false);
 	};
 
-	const handlePlayButtonPressed = () => {
-		console.log("play button pressed");
-		setPlay(true);
-	};
-
-	let [executionOutput, setExecutionOutput] = useState(null);
-	let [fileName, setFileName] = useState(null);
-
-	const buttonColor = fileName !== null ? "success" : "primary";
+	const buttonColor = executionOutput.fileName !== null ? "success" : "primary";
 	const buttonIcon =
-		fileName !== null ? <DoneIcon /> : <UploadFileOutlinedIcon />;
+		executionOutput.fileName !== null ? (
+			<DoneIcon />
+		) : (
+			<UploadFileOutlinedIcon />
+		);
 
 	async function getFileCallBack(uploadedFile) {
 		if (uploadedFile !== null) {
-			setExecutionOutput(
-				(executionOutput = JSON.parse(await uploadedFile.text()))
-			);
-			setFileName((fileName = uploadedFile.name));
+			setExecutionOutput({
+				fileName: uploadedFile.name,
+				file: JSON.parse(await uploadedFile.text())
+			});
 		}
 	}
 
@@ -133,40 +132,16 @@ const WorkPanel = () => {
 						{"fire"}
 					</Typography>
 					<LoadFileButton
-						id="loadFileButton1"
 						format="application/JSON"
 						buttonColor={buttonColor}
 						buttonIcon={buttonIcon}
-						fileName={fileName}
+						fileName={executionOutput.fileName}
 						getFileCallBack={getFileCallBack}
 					>
 						file
 					</LoadFileButton>
 				</Box>
-				<StatusBar
-					generation={"0"}
-					executionState={"stoped"}
-					onPlay={handlePlayButtonPressed}
-				/>
-				<Box
-					mt={4}
-					sx={{
-						display: "flex",
-						height: "100vh",
-						border: "1px dashed grey",
-						justifyContent: "center",
-						alignItems: "center"
-					}}
-				>
-					{executionOutput !== null ? (
-						<CellularAutomaton play={play} execOutputData={executionOutput} />
-					) : (
-						<Typography variant="body1" color="initial">
-							Load the cellular automaton life cycle file in order to create the
-							view
-						</Typography>
-					)}
-				</Box>
+				<CellularAutomatonDisplay executionOutput={executionOutput} />
 			</Content>
 		</Box>
 	);
