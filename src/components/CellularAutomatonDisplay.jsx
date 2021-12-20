@@ -12,8 +12,6 @@ const CellularAutomatonDisplay = (props) => {
 
 	const [execOutputData, setExecOutputData] = useState(props.execOutputData);
 
-	const columnsQuantity = execOutputData.params.colsQuantity;
-
 	const [buttonsStatus, setButtonsStatus] = useState({
 		stepBackward: false,
 		stop: false,
@@ -68,21 +66,22 @@ const CellularAutomatonDisplay = (props) => {
 	});
 
 	useEffect(() => {
+		console.log("objeto:", props.executionOutput);
 		resolveRunningStatus();
 	});
 
 	const resolveRunningStatus = () => {
-		if (props.buttonsStatus.play && !status.current.isRunning) {
+		if (buttonsStatus.play && !status.current.isRunning) {
 			status.current.isRunning = true;
 			run();
 		}
 
-		if (props.buttonsStatus.stop) {
+		if (buttonsStatus.stop) {
 			generationIndexRef.current = 0;
 			status.current.isRunning = false;
 		}
 
-		if (props.buttonsStatus.pause) {
+		if (buttonsStatus.pause) {
 			status.current.isRunning = false;
 		}
 	};
@@ -124,7 +123,7 @@ const CellularAutomatonDisplay = (props) => {
 					<div
 						style={{
 							display: "grid",
-							gridTemplateColumns: `repeat(${columnsQuantity},${gridSquareSize}px)`
+							gridTemplateColumns: `repeat(${props.executionOutput.params.colsQuantity},${gridSquareSize}px)`
 						}}
 					>
 						{execOutputData.generations[generationIndex].map((row, i) =>
