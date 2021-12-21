@@ -16,137 +16,137 @@ import SquareIcon from "@mui/icons-material/Square";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import DoorBackIcon from "@mui/icons-material/DoorBack";
 import SensorsIcon from "@mui/icons-material/Sensors";
+import SquareOutlinedIcon from "@mui/icons-material/SquareOutlined";
 import CustomDropDownList from "./components/CustomDropDownList";
 import Divider from "@mui/material/Divider";
 
 const Content = styled("Content", {
-    shouldForwardProp: (prop) => prop !== "open"
+	shouldForwardProp: (prop) => prop !== "open"
 })(({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-    }),
-    marginLeft: `-${theme.drawerWidth}px`,
-    ...(open && {
-        transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen
-        }),
-        marginLeft: 0
-    })
+	flexGrow: 1,
+	padding: theme.spacing(3),
+	transition: theme.transitions.create("margin", {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen
+	}),
+	marginLeft: `-${theme.drawerWidth}px`,
+	...(open && {
+		transition: theme.transitions.create("margin", {
+			easing: theme.transitions.easing.easeOut,
+			duration: theme.transitions.duration.enteringScreen
+		}),
+		marginLeft: 0
+	})
 }));
 
 const ConfigBarSpacing = styled("div")(({ theme }) => ({
-    ...theme.mixins.toolbar
+	...theme.mixins.toolbar
 }));
 
 const WorkPanel = () => {
-    const theme = useTheme();
-    const [open, setOpen] = useState(false);
+	const theme = useTheme();
+	const [open, setOpen] = useState(false);
 
-    const [executionOutput, setExecutionOutput] = useState({
-        fileName: null,
-        file: null
-    });
+	const [executionOutput, setExecutionOutput] = useState({
+		fileName: null,
+		file: null
+	});
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+	const handleDrawerOpen = () => {
+		setOpen(true);
+	};
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
 
-    const buttonColor =
-        executionOutput.fileName !== null ? "success" : "primary";
-    const buttonIcon =
-        executionOutput.fileName !== null ? (
-            <DoneIcon />
-        ) : (
-            <UploadFileOutlinedIcon />
-        );
+	const buttonColor = executionOutput.fileName !== null ? "success" : "primary";
+	const buttonIcon =
+		executionOutput.fileName !== null ? (
+			<DoneIcon />
+		) : (
+			<UploadFileOutlinedIcon />
+		);
 
-    async function getFileCallBack(uploadedFile) {
-        if (uploadedFile !== null) {
-            setExecutionOutput({
-                fileName: uploadedFile.name,
-                file: JSON.parse(await uploadedFile.text())
-            });
-        }
-    }
+	async function getFileCallBack(uploadedFile) {
+		if (uploadedFile !== null) {
+			setExecutionOutput({
+				fileName: uploadedFile.name,
+				file: JSON.parse(await uploadedFile.text())
+			});
+		}
+	}
 
-    return (
-        <Box sx={{ display: "flex" }}>
-            <CssBaseline />
-            <ConfigBar
-                position="fixed"
-                open={open}
-                openWidth={theme.drawerWidth}
-                iconButtonOnClick={handleDrawerOpen}
-            ></ConfigBar>
+	return (
+		<Box sx={{ display: "flex" }}>
+			<CssBaseline />
+			<ConfigBar
+				position="fixed"
+				open={open}
+				openWidth={theme.drawerWidth}
+				iconButtonOnClick={handleDrawerOpen}
+			></ConfigBar>
 
-            <DrawerPanel open={open} iconButtonOnClick={handleDrawerClose}>
-                <CustomDropDownList
-                    title={"Enviroment"}
-                    icon={<ViewComfyIcon />}
-                    list={[
-                        { name: "wall", icon: <SquareIcon /> },
-                        { name: "fire", icon: <LocalFireDepartmentIcon /> },
-                        { name: "exit", icon: <DoorBackIcon /> },
-                        { name: "sensor", icon: <SensorsIcon /> }
-                    ]}
-                />
+			<DrawerPanel open={open} iconButtonOnClick={handleDrawerClose}>
+				<CustomDropDownList
+					title={"Enviroment"}
+					icon={<ViewComfyIcon />}
+					list={[
+						{ name: "wall", icon: <SquareIcon /> },
+						{ name: "fire", icon: <LocalFireDepartmentIcon /> },
+						{ name: "exit", icon: <DoorBackIcon /> },
+						{ name: "sensor", icon: <SensorsIcon /> },
+						{ name: "GoL alive", icon: <SquareIcon /> },
+						{ name: "GoL dead", icon: <SquareOutlinedIcon /> }
+					]}
+				/>
 
-                <Divider />
-                <CustomDropDownList
-                    title={"Agents"}
-                    icon={<GroupAddRoundedIcon />}
-                    list={[
-                        { name: "closest exit", icon: <PersonRoundedIcon /> },
-                        { name: "follow", icon: <PersonRoundedIcon /> },
-                        { name: "known exit", icon: <PersonRoundedIcon /> }
-                    ]}
-                />
-            </DrawerPanel>
+				<Divider />
+				<CustomDropDownList
+					title={"Agents"}
+					icon={<GroupAddRoundedIcon />}
+					list={[
+						{ name: "closest exit", icon: <PersonRoundedIcon /> },
+						{ name: "follow", icon: <PersonRoundedIcon /> },
+						{ name: "known exit", icon: <PersonRoundedIcon /> }
+					]}
+				/>
+			</DrawerPanel>
 
-            <Content open={open}>
-                <ConfigBarSpacing />
+			<Content open={open}>
+				<ConfigBarSpacing />
 
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center"
-                    }}
-                >
-                    <Typography variant="overline" ml={2}>
-                        Selection:
-                    </Typography>
-                    <Typography
-                        variant="overline"
-                        color="primary"
-                        ml={1}
-                        sx={{ flexGrow: 1 }}
-                    >
-                        {"fire"}
-                    </Typography>
-                    <LoadFileButton
-                        format="application/JSON"
-                        buttonColor={buttonColor}
-                        buttonIcon={buttonIcon}
-                        fileName={executionOutput.fileName}
-                        getFileCallBack={getFileCallBack}
-                    >
-                        file
-                    </LoadFileButton>
-                </Box>
-                <CellularAutomatonDisplay
-                    executionOutputData={executionOutput.file}
-                />
-            </Content>
-        </Box>
-    );
+				<Box
+					sx={{
+						display: "flex",
+						alignItems: "center"
+					}}
+				>
+					<Typography variant="overline" ml={2}>
+						Selection:
+					</Typography>
+					<Typography
+						variant="overline"
+						color="primary"
+						ml={1}
+						sx={{ flexGrow: 1 }}
+					>
+						{"fire"}
+					</Typography>
+					<LoadFileButton
+						format="application/JSON"
+						buttonColor={buttonColor}
+						buttonIcon={buttonIcon}
+						fileName={executionOutput.fileName}
+						getFileCallBack={getFileCallBack}
+					>
+						file
+					</LoadFileButton>
+				</Box>
+				<CellularAutomatonDisplay executionOutputData={executionOutput.file} />
+			</Content>
+		</Box>
+	);
 };
 
 export default WorkPanel;
