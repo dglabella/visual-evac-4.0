@@ -43,7 +43,6 @@ const ConfigBarSpacing = styled("div")(({ theme }) => ({
 }));
 
 const WorkPanel = () => {
-    console.log("rendering: WorkPanel");
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
