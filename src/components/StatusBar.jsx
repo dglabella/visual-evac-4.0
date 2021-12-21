@@ -79,7 +79,7 @@ const StatusBar = (props) => {
 			<Typography variant="overline" ml={2}>
 				execution state:
 			</Typography>
-			<Typography variant="overline" color="primary" mr={2}>
+			<Typography variant="overline" color={props.statusColor} mr={2}>
 				{props.executionState}
 			</Typography>
 		</Box>
