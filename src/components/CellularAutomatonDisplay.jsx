@@ -6,11 +6,16 @@ import { red, grey, green, amber } from "@mui/material/colors";
 import GameOfLifeCell from "./GameOfLifeCell";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const gridSquareSize = 10;
 
 const CellularAutomatonDisplay = (props) => {
 	const generationIndexRef = useRef(0);
+	const [hideFloatingButton, setHideFloatingButton] = useState(false);
+	const [open, setOpen] = useState(false);
+
 	const [generationIndex, setGenerationIndex] = useState(0);
 
 	const [buttonsStatus, setButtonsStatus] = useState({
@@ -20,6 +25,13 @@ const CellularAutomatonDisplay = (props) => {
 		pause: false,
 		stepForward: false
 	});
+
+	const closeBackDrop = () => {
+		setOpen(false);
+	};
+	const openBackDrop = () => {
+		setOpen(!open);
+	};
 
 	const handleStepBackwardButtonPressed = () => {
 		console.log("step backward button pressed");
@@ -174,21 +186,34 @@ const CellularAutomatonDisplay = (props) => {
 						cellular automaton generations file in order to create the view.
 					</Typography>
 				)}
-				<Fab
-					color="primary"
-					aria-label="new"
-					size="small"
-					sx={{
-						position: "fixed",
-						bottom: (theme) => theme.spacing(1),
-						right: (theme) => theme.spacing(4)
-					}}
-					onClick={() => {
-						console.log("Holaaaa");
-					}}
-				>
-					<AddIcon />
-				</Fab>
+				{hideFloatingButton ? (
+					<></>
+				) : (
+					<>
+						<Fab
+							color="primary"
+							aria-label="new"
+							size="small"
+							sx={{
+								position: "fixed",
+								bottom: (theme) => theme.spacing(1),
+								right: (theme) => theme.spacing(4)
+							}}
+							onClick={() => {
+								console.log("Holaaaa");
+							}}
+						>
+							<AddIcon />
+						</Fab>
+						<Backdrop
+							sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+							open={open}
+							onClick={closeBackDrop}
+						>
+							<CircularProgress color="inherit" />
+						</Backdrop>
+					</>
+				)}
 			</Box>
 		</>
 	);

@@ -12,6 +12,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 const customDiv1Grow = 0.1;
@@ -73,19 +74,6 @@ const ConfigBar = (props) => {
 						Elements
 					</Typography>
 					<CustomDiv1 />
-					<Tooltip title="New model">
-						<IconButton size="medium" aria-label="New model button">
-							<AddCircleOutlinedIcon color="info" />
-						</IconButton>
-					</Tooltip>
-					<Button
-						variant="outlined"
-						aria-label="New model"
-						color="inherit"
-						onClick={newModelButtonPressed}
-					>
-						Configs
-					</Button>
 					<CustomDiv2 />
 					{/* <Button
                     variant="outlined"
