@@ -11,8 +11,9 @@ const CustomDropDownList = (props) => {
     const [open, setOpen] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState(null);
 
-    const handleListItemClick = (index) => {
+    const handleListItemClick = (element, index) => {
         setSelectedIndex(index);
+        props.handleItemSelection(element, index);
     };
 
     const handleClick = () => {
@@ -37,7 +38,7 @@ const CustomDropDownList = (props) => {
                             key={index}
                             sx={{ pl: 4 }}
                             selected={selectedIndex === index}
-                            onClick={() => handleListItemClick(index)}
+                            onClick={() => handleListItemClick(element, index)}
                         >
                             <ListItemIcon>{element.icon}</ListItemIcon>
                             <ListItemText primary={element.name} />

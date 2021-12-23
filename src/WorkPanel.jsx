@@ -21,132 +21,149 @@ import CustomDropDownList from "./components/CustomDropDownList";
 import Divider from "@mui/material/Divider";
 
 const Content = styled("Content", {
-	shouldForwardProp: (prop) => prop !== "open"
+    shouldForwardProp: (prop) => prop !== "open"
 })(({ theme, open }) => ({
-	flexGrow: 1,
-	padding: theme.spacing(3),
-	transition: theme.transitions.create("margin", {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.leavingScreen
-	}),
-	marginLeft: `-${theme.drawerWidth}px`,
-	...(open && {
-		transition: theme.transitions.create("margin", {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen
-		}),
-		marginLeft: 0
-	})
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+    }),
+    marginLeft: `-${theme.drawerWidth}px`,
+    ...(open && {
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen
+        }),
+        marginLeft: 0
+    })
 }));
 
 const ConfigBarSpacing = styled("div")(({ theme }) => ({
-	...theme.mixins.toolbar
+    ...theme.mixins.toolbar
 }));
 
 const WorkPanel = () => {
-	const theme = useTheme();
-	const [open, setOpen] = useState(true);
+    const theme = useTheme();
+    const [listItemSelected, setListItemSelected] = useState("none");
 
-	const [executionOutput, setExecutionOutput] = useState({
-		fileName: null,
-		file: null
-	});
+    const [executionOutput, setExecutionOutput] = useState({
+        fileName: null,
+        file: null
+    });
 
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
+    const [open, setOpen] = useState(true);
 
-	const handleDrawerClose = () => {
-		setOpen(false);
-	};
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
 
-	const buttonColor = executionOutput.fileName !== null ? "success" : "primary";
-	const buttonIcon =
-		executionOutput.fileName !== null ? (
-			<DoneIcon />
-		) : (
-			<UploadFileOutlinedIcon />
-		);
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
-	async function getFileCallBack(uploadedFile) {
-		if (uploadedFile !== null) {
-			setExecutionOutput({
-				fileName: uploadedFile.name,
-				file: JSON.parse(await uploadedFile.text())
-			});
-		}
-	}
+    const buttonColor =
+        executionOutput.fileName !== null ? "success" : "primary";
+    const buttonIcon =
+        executionOutput.fileName !== null ? (
+            <DoneIcon />
+        ) : (
+            <UploadFileOutlinedIcon />
+        );
 
-	return (
-		<Box sx={{ display: "flex" }}>
-			<CssBaseline />
-			<ConfigBar
-				position="fixed"
-				open={open}
-				openWidth={theme.drawerWidth}
-				iconButtonOnClick={handleDrawerOpen}
-			></ConfigBar>
+    async function getFileCallBack(uploadedFile) {
+        if (uploadedFile !== null) {
+            setExecutionOutput({
+                fileName: uploadedFile.name,
+                file: JSON.parse(await uploadedFile.text())
+            });
+        }
+    }
 
-			<DrawerPanel open={open} iconButtonOnClick={handleDrawerClose}>
-				<CustomDropDownList
-					title={"Enviroment"}
-					icon={<ViewComfyIcon />}
-					list={[
-						{ name: "wall", icon: <SquareIcon /> },
-						{ name: "fire", icon: <LocalFireDepartmentIcon /> },
-						{ name: "exit", icon: <DoorBackIcon /> },
-						{ name: "sensor", icon: <SensorsIcon /> },
-						{ name: "GoL alive", icon: <SquareIcon /> },
-						{ name: "GoL dead", icon: <SquareOutlinedIcon /> }
-					]}
-				/>
+    const cleanExecutionOutput = () => {
+        setExecutionOutput({ fileName: null, file: null });
+    };
 
-				<Divider />
-				<CustomDropDownList
-					title={"Agents"}
-					icon={<GroupAddRoundedIcon />}
-					list={[
-						{ name: "closest exit", icon: <PersonRoundedIcon /> },
-						{ name: "follow", icon: <PersonRoundedIcon /> },
-						{ name: "known exit", icon: <PersonRoundedIcon /> }
-					]}
-				/>
-			</DrawerPanel>
+    const listItemPressed = (element, index) => {
+        setListItemSelected(element);
+    };
 
-			<Content open={open}>
-				<ConfigBarSpacing />
+    return (
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <ConfigBar
+                position="fixed"
+                open={open}
+                openWidth={theme.drawerWidth}
+                iconButtonOnClick={handleDrawerOpen}
+            ></ConfigBar>
 
-				<Box
-					sx={{
-						display: "flex",
-						alignItems: "center"
-					}}
-				>
-					<Typography variant="overline" ml={2}>
-						Selection:
-					</Typography>
-					<Typography
-						variant="overline"
-						color="primary"
-						ml={1}
-						sx={{ flexGrow: 1 }}
-					>
-						{"fire"}
-					</Typography>
-					<LoadFileButton
-						format="application/JSON"
-						buttonColor={buttonColor}
-						buttonIcon={buttonIcon}
-						fileName={executionOutput.fileName}
-						getFileCallBack={getFileCallBack}
-					>
-						file
-					</LoadFileButton>
-				</Box>
-				<CellularAutomatonDisplay executionOutputData={executionOutput.file} />
-			</Content>
-		</Box>
-	);
+            <DrawerPanel open={open} iconButtonOnClick={handleDrawerClose}>
+                <CustomDropDownList
+                    title={"Enviroment"}
+                    icon={<ViewComfyIcon />}
+                    handleItemSelection={listItemPressed}
+                    list={[
+                        { name: "wall", icon: <SquareIcon /> },
+                        { name: "fire", icon: <LocalFireDepartmentIcon /> },
+                        { name: "exit", icon: <DoorBackIcon /> },
+                        { name: "sensor", icon: <SensorsIcon /> }
+                    ]}
+                />
+
+                <Divider />
+                <CustomDropDownList
+                    title={"Agents"}
+                    icon={<GroupAddRoundedIcon />}
+                    handleItemSelection={listItemPressed}
+                    list={[
+                        { name: "closest exit", icon: <PersonRoundedIcon /> },
+                        { name: "follow", icon: <PersonRoundedIcon /> },
+                        { name: "known exit", icon: <PersonRoundedIcon /> }
+                    ]}
+                />
+            </DrawerPanel>
+
+            <Content open={open}>
+                <ConfigBarSpacing />
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center"
+                    }}
+                >
+                    <Typography variant="overline" ml={2}>
+                        Selection:
+                    </Typography>
+                    <Typography
+                        variant="overline"
+                        color="primary"
+                        ml={1}
+                        sx={{ flexGrow: 1 }}
+                    >
+                        <>
+                            {listItemSelected.icon}
+                            {listItemSelected.name}
+                        </>
+                    </Typography>
+                    <LoadFileButton
+                        format="application/JSON"
+                        buttonColor={buttonColor}
+                        buttonIcon={buttonIcon}
+                        fileName={executionOutput.fileName}
+                        getFileCallBack={getFileCallBack}
+                    >
+                        file
+                    </LoadFileButton>
+                </Box>
+                <CellularAutomatonDisplay
+                    executionOutputData={executionOutput.file}
+                    cleanExecutionOutputData={cleanExecutionOutput}
+                />
+            </Content>
+        </Box>
+    );
 };
 
 export default WorkPanel;

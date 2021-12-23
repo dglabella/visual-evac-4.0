@@ -4,14 +4,14 @@ import { styled } from "@mui/material/styles";
 const AliveCell = styled("div")(() => ({
     width: "10px",
     height: "10px",
-    border: "solid 1px black",
+    border: "1px solid black",
     backgroundColor: "black"
 }));
 
 const DeadCell = styled("div")(() => ({
     width: "10px",
     height: "10px",
-    border: "solid 1px black",
+    border: "1px solid black",
     backgroundColor: "white"
 }));
 
