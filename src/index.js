@@ -7,12 +7,12 @@ import Login from "./Login";
 import ScenarioSelection from "./ScenarioSelection";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ThemeProvider theme={globalTheme}>
-            <Login />
-            {/* <ScenarioSelection />
-            <WorkPanel /> */}
-        </ThemeProvider>
-    </React.StrictMode>,
-    document.getElementById("root")
+	<React.StrictMode>
+		<ThemeProvider theme={globalTheme}>
+			{/* <Login />
+            <ScenarioSelection /> */}
+			<WorkPanel />
+		</ThemeProvider>
+	</React.StrictMode>,
+	document.getElementById("root")
 );
