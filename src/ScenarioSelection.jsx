@@ -1,7 +1,7 @@
 import React from "react";
 
 const ScenarioSelection = () => {
-    return <div>scenarios</div>;
+	return <div>scenarios</div>;
 };
 
 export default ScenarioSelection;

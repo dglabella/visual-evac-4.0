@@ -111,7 +111,17 @@ const CellularAutomatonDisplay = (props) => {
 		const generationsForCreation = [
 			Array.from({ length: rowsForCreation }, (i) =>
 				Array.from({ length: colsForCreation }, (j) => (
-					<Cell key={`(${i},${j})`} />
+					<div
+						styled={{
+							width: "10px",
+							height: "10px",
+							border: "1px solid black",
+							backgroundColor: "white"
+						}}
+						onClick={() => {
+							console.log("clicked");
+						}}
+					/>
 				))
 			)
 		];
@@ -223,7 +233,11 @@ const CellularAutomatonDisplay = (props) => {
 					>
 						{execOutputData.generations[generationIndex].map((row, i) =>
 							row.map((cellState, j) => (
-								<GameOfLifeCell key={`(${i},${j})`} cellState={cellState} />
+								<GameOfLifeCell
+									key={`(${i},${j})`}
+									cellState={cellState}
+									handleCellClick={handleCellClick}
+								/>
 							))
 						)}
 					</div>

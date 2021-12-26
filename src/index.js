@@ -9,8 +9,8 @@ import ScenarioSelection from "./ScenarioSelection";
 ReactDOM.render(
 	<React.StrictMode>
 		<ThemeProvider theme={globalTheme}>
-			{/* <Login />
-            <ScenarioSelection /> */}
+			{/* <Login /> */}
+			{/* <ScenarioSelection /> */}
 			<WorkPanel />
 		</ThemeProvider>
 	</React.StrictMode>,
