@@ -5,10 +5,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DoneIcon from "@mui/icons-material/Done";
-import CellularAutomatonDisplay from "./components/CellularAutomatonDisplay";
-import LoadFileButton from "./components/LoadFileButton";
-import ConfigBar from "./components/ConfigBar";
-import DrawerPanel from "./components/DrawerPanel";
+import CellularAutomatonDisplay from "../components/CellularAutomatonDisplay";
+import LoadFileButton from "../components/LoadFileButton";
+import ConfigBar from "../components/ConfigBar";
+import DrawerPanel from "../components/DrawerPanel";
 import ViewComfyIcon from "@mui/icons-material/ViewComfy";
 import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
@@ -17,7 +17,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import DoorBackIcon from "@mui/icons-material/DoorBack";
 import SensorsIcon from "@mui/icons-material/Sensors";
 import SquareOutlinedIcon from "@mui/icons-material/SquareOutlined";
-import CustomDropDownList from "./components/CustomDropDownList";
+import CustomDropDownList from "../components/CustomDropDownList";
 import Divider from "@mui/material/Divider";
 
 const Content = styled("Content", {
