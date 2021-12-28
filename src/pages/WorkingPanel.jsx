@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import useTheme from "@mui/material/styles/useTheme";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -19,31 +19,10 @@ import SensorsIcon from "@mui/icons-material/Sensors";
 import SquareOutlinedIcon from "@mui/icons-material/SquareOutlined";
 import CustomDropDownList from "../components/CustomDropDownList";
 import Divider from "@mui/material/Divider";
+import ConfigBarSpacing from "./../components/styled/AppBarSpacing";
+import MainDisplaySection from "./../components/styled/MainDisplaySection";
 
-const Content = styled("Content", {
-	shouldForwardProp: (prop) => prop !== "open"
-})(({ theme, open }) => ({
-	flexGrow: 1,
-	padding: theme.spacing(3),
-	transition: theme.transitions.create("margin", {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.leavingScreen
-	}),
-	marginLeft: `-${theme.drawerWidth}px`,
-	...(open && {
-		transition: theme.transitions.create("margin", {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen
-		}),
-		marginLeft: 0
-	})
-}));
-
-const ConfigBarSpacing = styled("div")(({ theme }) => ({
-	...theme.mixins.toolbar
-}));
-
-const WorkPanel = () => {
+const WorkingPanel = () => {
 	const theme = useTheme();
 	const [listItemSelected, setListItemSelected] = useState("none");
 
@@ -123,9 +102,8 @@ const WorkPanel = () => {
 				/>
 			</DrawerPanel>
 
-			<Content open={open}>
+			<MainDisplaySection open={open}>
 				<ConfigBarSpacing />
-
 				<Box
 					sx={{
 						display: "flex",
@@ -160,9 +138,9 @@ const WorkPanel = () => {
 					executionOutputData={executionOutput.file}
 					cleanExecutionOutputData={cleanExecutionOutput}
 				/>
-			</Content>
+			</MainDisplaySection>
 		</Box>
 	);
 };
 
-export default WorkPanel;
+export default WorkingPanel;

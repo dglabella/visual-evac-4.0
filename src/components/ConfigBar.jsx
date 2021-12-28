@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
 import { Toolbar, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Tooltip from "@mui/material/Tooltip";
@@ -13,26 +12,10 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import SnippetFolderIcon from "@mui/icons-material/SnippetFolder";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
+import AppBar from "./styled/AppBar";
 
 const customDiv1Grow = 0.1;
 const customDiv2Grow = 1 - customDiv1Grow;
-
-const AppBar = styled(MuiAppBar, {
-	shouldForwardProp: (prop) => prop !== "open"
-})(({ theme, open }) => ({
-	transition: theme.transitions.create(["margin", "width"], {
-		easing: theme.transitions.easing.sharp,
-		duration: theme.transitions.duration.leavingScreen
-	}),
-	...(open && {
-		width: `calc(100% - ${theme.drawerWidth}px)`,
-		marginLeft: `${theme.drawerWidth}px`,
-		transition: theme.transitions.create(["margin", "width"], {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen
-		})
-	})
-}));
 
 const CustomDiv1 = styled("div")(({ theme }) => ({
 	flexGrow: customDiv1Grow
@@ -72,14 +55,6 @@ const ConfigBar = (props) => {
 					</Typography>
 					<CustomDiv1 />
 					<CustomDiv2 />
-					{/* <Button
-                    variant="outlined"
-                    aria-label="profile button"
-                    color="inherit"
-                    onClick={loginIconButtonClicked}
-                >
-                    Profile
-                </Button> */}
 					<Tooltip title="Settings">
 						<IconButton
 							size="small"

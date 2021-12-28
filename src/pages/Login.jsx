@@ -16,13 +16,6 @@ import fcfmynLogo from "./../assets/images/logo-fcfmyn.png";
 import dirinfoLogo from "./../assets/images/logo-dirinfo.png";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const Item = styled(Paper)(({ theme }) => ({
-	...theme.typography.body2,
-	padding: theme.spacing(1),
-	textAlign: "center",
-	color: theme.palette.text.secondary
-}));
-
 const LoginSection = styled(Paper)(({ theme }) => ({
 	...theme.typography.body2,
 	padding: theme.spacing(2),
