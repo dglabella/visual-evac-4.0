@@ -8,7 +8,7 @@ import ScenarioSelection from "./pages/ScenarioSelection";
 const App = () => {
 	return (
 		<ThemeProvider theme={globalTheme}>
-			<WorkingPanel />
+			<ScenarioSelection />
 		</ThemeProvider>
 	);
 };
