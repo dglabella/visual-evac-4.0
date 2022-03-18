@@ -4,11 +4,12 @@ import WorkingPanel from "./pages/WorkingPanel";
 import globalTheme from "./styles/globalTheme";
 import Login from "./pages/Login";
 import ScenarioSelection from "./pages/ScenarioSelection";
+import Test from "./pages/Test";
 
 const App = () => {
 	return (
 		<ThemeProvider theme={globalTheme}>
-			<ScenarioSelection />
+			<Test />
 		</ThemeProvider>
 	);
 };
