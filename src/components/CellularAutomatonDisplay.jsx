@@ -23,7 +23,9 @@ const CellularAutomatonDisplay = (props) => {
 	const [hideFloatingButton, setHideFloatingButton] = useState(false);
 	const [open, setOpen] = useState(false);
 
-	const [execOutputData, setExecOutputData] = useState(null);
+	const [execOutputData, setExecOutputData] = useState(
+		props.executionOutputData
+	);
 
 	const generationIndexRef = useRef(0);
 	const [generationIndex, setGenerationIndex] = useState(0);
@@ -139,11 +141,14 @@ const CellularAutomatonDisplay = (props) => {
 	};
 
 	useEffect(() => {
-		if (props.executionOutputData !== null) {
-			setExecOutputData(props.executionOutputData);
-		}
-
 		resolveRunningStatus();
+	});
+
+	useEffect(() => {
+		console.log(
+			"in Cellular Automaton Use Effect",
+			props.executionOutputData?.data.annotation
+		);
 	});
 
 	const resolveRunningStatus = () => {
@@ -228,7 +233,8 @@ const CellularAutomatonDisplay = (props) => {
 					<div
 						style={{
 							display: "grid",
-							gridTemplateColumns: `repeat(${execOutputData.params.colsQuantity},${gridSquareSize}px)`
+							//gridTemplateColumns: `repeat(${execOutputData.params.colsQuantity},${gridSquareSize}px)`
+							gridTemplateColumns: `repeat(${execOutputData.data.environment.width},${gridSquareSize}px)`
 						}}
 					>
 						{execOutputData.generations[generationIndex].map((row, i) =>

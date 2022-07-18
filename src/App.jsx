@@ -9,7 +9,7 @@ import Test from "./pages/Test";
 const App = () => {
 	return (
 		<ThemeProvider theme={globalTheme}>
-			<Test />
+			<WorkingPanel />
 		</ThemeProvider>
 	);
 };

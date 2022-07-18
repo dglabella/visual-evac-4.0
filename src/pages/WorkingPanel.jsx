@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useTheme from "@mui/material/styles/useTheme";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,6 +21,10 @@ import CustomDropDownList from "../components/CustomDropDownList";
 import Divider from "@mui/material/Divider";
 import ConfigBarSpacing from "./../components/styled/AppBarSpacing";
 import MainDisplaySection from "./../components/styled/MainDisplaySection";
+import axios from "axios";
+
+const endPoint1 = "http://localhost:8085/states/628f5326b1ab917d52d82913";
+const endPoint2 = "http://localhost:8085/users";
 
 const WorkingPanel = () => {
 	const theme = useTheme();
@@ -32,6 +36,20 @@ const WorkingPanel = () => {
 	});
 
 	const [open, setOpen] = useState(true);
+
+	useEffect(() => {
+		console.log("In Working Panel Use Effect");
+		axios
+			.get(endPoint1)
+			.then((response) => {
+				//console.log("Response OK", response);
+				setExecutionOutput({
+					fileName: response.data.annotation,
+					file: response
+				});
+			})
+			.catch(console.log("Error occurred"));
+	}, []);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
