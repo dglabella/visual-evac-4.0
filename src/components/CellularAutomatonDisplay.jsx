@@ -21,6 +21,7 @@ const CellularAutomatonDisplay = (props) => {
 	const theme = useTheme();
 
 	const [hideFloatingButton, setHideFloatingButton] = useState(false);
+
 	const [open, setOpen] = useState(false);
 
 	const [execOutputData, setExecOutputData] = useState(
@@ -147,7 +148,8 @@ const CellularAutomatonDisplay = (props) => {
 	useEffect(() => {
 		console.log(
 			"in Cellular Automaton Use Effect",
-			props.executionOutputData?.data.annotation
+			props.executionOutputData?.annotation,
+			execOutputData?.annotation
 		);
 	});
 
@@ -233,8 +235,7 @@ const CellularAutomatonDisplay = (props) => {
 					<div
 						style={{
 							display: "grid",
-							//gridTemplateColumns: `repeat(${execOutputData.params.colsQuantity},${gridSquareSize}px)`
-							gridTemplateColumns: `repeat(${execOutputData.data.environment.width},${gridSquareSize}px)`
+							gridTemplateColumns: `repeat(${execOutputData.params.colsQuantity},${gridSquareSize}px)`
 						}}
 					>
 						{execOutputData.generations[generationIndex].map((row, i) =>

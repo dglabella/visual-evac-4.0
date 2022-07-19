@@ -42,13 +42,13 @@ const WorkingPanel = () => {
 		axios
 			.get(endPoint1)
 			.then((response) => {
-				//console.log("Response OK", response);
+				console.log("Response OK", response.data);
 				setExecutionOutput({
 					fileName: response.data.annotation,
-					file: response
+					file: response.data
 				});
 			})
-			.catch(console.log("Error occurred"));
+			.catch((error) => console.log("Error occurred", error));
 	}, []);
 
 	const handleDrawerOpen = () => {
